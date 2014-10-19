@@ -27,4 +27,8 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 1)  The dataset will be downloaded and unzipped to a directory added to your working
 directory structure:
         ./UCI HAR Dataset
-        
+2)  the download file name will be Dataset
+
+
+"Descriptive Activity" is found in the activity.label table
+"Measurements" are defined in the feature.list table
