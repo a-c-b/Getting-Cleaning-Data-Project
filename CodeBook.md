@@ -32,3 +32,9 @@ directory structure:
 
 "Descriptive Activity" is found in the activity.label table
 "Measurements" are defined in the feature.list table
+
+
+
+libraries to ensure are loaded
+reshape2
+dplyr
