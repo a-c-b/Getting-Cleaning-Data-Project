@@ -13,3 +13,10 @@ so the download takes that into account, otherwise the unzip would not work.
 Libraries which need to be loaded:
 dplyr
 
+
+
+#run_analysis R script, 
+#a ReadMe markdown document, 
+#a Codebook markdown document, 
+#and a tidy data text file (this last goes on Coursera). 
+

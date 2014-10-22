@@ -38,3 +38,13 @@ directory structure:
 libraries to ensure are loaded
 reshape2
 dplyr
+
+## Temporary variables
+dataset_url - temporary variable holding the location of the download data
+names1 - variable holding the names / headers for the activity data
+features.list - temporary variable taking the parsed, raw features data
+activity.labels - Links the class labels with their activity name
+
+y.test, y.train - Test & Training activity data for the dataset.  Straight numeric info.
+
+
