@@ -40,15 +40,16 @@
         features.list<-read.csv("./UCI HAR Dataset/features.txt", sep=" ", header = FALSE)
 # Links the numeric labels of the activity with their activity name
         activity.labels<-read.csv("./UCI HAR Dataset/activity_labels.txt", sep=" ", header = FALSE)
+                names(activity.labels)<-c("ActivityNum","Activity")
 
-# Load the files of Test labels, subjects, and data
+# Load the files of Test labels, subjects, and data.  Name the columns.
         y.test<-read.csv("./UCI HAR Dataset/test/y_test.txt", sep="", header = FALSE)
+                names(y.test)<-"ActivityNum"
         subject.test<-read.csv("./UCI HAR Dataset/test/subject_test.txt", sep="", header = FALSE)
+                names(subject.test)<-c("Subject")
         x.test<-read.csv("./UCI HAR Dataset/test/X_test.txt", sep="", header = FALSE)
-# Load the files of Training labels, subjects and data
-        y.train<-read.csv("./UCI HAR Dataset/train/y_train.txt", sep="", header = FALSE)
-        subject.train<-read.csv("./UCI HAR Dataset/train/subject_train.txt", sep="", header = FALSE)
-        x.train<-read.csv("./UCI HAR Dataset/train/X_train.txt", sep="", header = FALSE)
+                names(x.test)<-features.list$V2
+
 
 ####  Begin processing the files #############
 #
@@ -58,71 +59,65 @@
 #
 #########
 
+## create a unique row number to merge files together
+        y.test$rownum<-c(1:nrow(y.test))
+        subject.test$rownum<-c(1:nrow(subject.test))
+        x.test$rownum<-c(1:nrow(x.test))
+
 # Merge the Activity Number with an Activity Label
-        activity.test<-merge(y.test, activity.labels, by = "V1", all.x = TRUE)
-        activity.train<-merge(y.train, activity.labels, by = "V1", all.x = TRUE)
-
-
-## assign names to the table
-        names(activity.test)<-c("num","activity")
-        names(activity.train)<-c("num","activity")
-
-###### Combining Test data to make full Test dataset ###########
-
-## create key field for future join to feature data 
-## by using a row number as the key. t1 & t2 are temporary variables
-   
-        t1<-data.frame(c(1:nrow(activity.test)))
-        t2<-data.frame(activity.test$activity)
-        activity.test<-cbind(t1,t2)
-        names(activity.test)<-c("num","activity")
-
-
-        t1<-data.frame(c(1:nrow(subject.test)))
-        t2<-data.frame(subject.test$V1)
-        subject.test<-cbind(t1,t2)
-        names(subject.test)<-c("num","subject")
-
-
-# add the names to the raw data dataset
-        names(x.test)<-features.list$V2
-
+        activity.test<-merge(y.test, activity.labels, by = "ActivityNum", all.x = TRUE)
 
 ##  create the cleaned test data set by combining
 #  the subject information with the activity to the dataset
 
-        test.data<-cbind("subject" = subject.test$subject,"activity" = activity.test$activity,x.test)
-      
+        test.data<-merge(activity.test, x.test, by = "rownum", all.x = TRUE, all.y=TRUE)
+        test.data<-merge(subject.test, test.data, by="rownum", all.x = TRUE, all.y = TRUE)
+
+##########  Training data
+##
+##    duplicated from test
+##
+##########
+# Load the files of train labels, subjects, and data.  Name the columns.
+        y.train<-read.csv("./UCI HAR Dataset/train/y_train.txt", sep="", header = FALSE)
+                names(y.train)<-"ActivityNum"
+        subject.train<-read.csv("./UCI HAR Dataset/train/subject_train.txt", sep="", header = FALSE)
+                names(subject.train)<-c("Subject")
+        x.train<-read.csv("./UCI HAR Dataset/train/X_train.txt", sep="", header = FALSE)
+                names(x.train)<-features.list$V2
 
 
-################  TRAINING datasets ########
+####  Begin processing the files #############
+#
+#    Combining tables of information to add descriptors
+#    to the dataset, including readable headers
+#    the association to a subject and the activity label
+#
+#########
 
-        t1<-data.frame(c(1:nrow(activity.train)))
-        t2<-data.frame(activity.train$activity)
-        activity.train<-cbind(t1,t2)
-        names(activity.train)<-c("num","activity")
+## create a unique row number to merge files together
+        y.train$rownum<-c(1:nrow(y.train))
+        subject.train$rownum<-c(1:nrow(subject.train))
+        x.train$rownum<-c(1:nrow(x.train))
 
+# Merge the Activity Number with an Activity Label
+        activity.train<-merge(y.train, activity.labels, by = "ActivityNum", all.x = TRUE)
 
-        t1<-data.frame(c(1:nrow(subject.train)))
-        t2<-data.frame(subject.train$V1)
-        subject.train<-cbind(t1,t2)
-        names(subject.train)<-c("num","subject")
+##  create the cleaned train data set by combining
+#  the subject information with the activity to the dataset
 
+        train.data<-merge(activity.train, x.train, by = "rownum", all.x = TRUE, all.y=TRUE)
+        train.data<-merge(subject.train, train.data, by="rownum", all.x = TRUE, all.y = TRUE)
 
-
-# Begin cleaning and prettyfying the Training set
-
-        names(x.train)<-features.list$V2
-## merge the activities with the data for each of the datasets
-        train.data<-cbind("subject" = subject.train$subject,"activity" = activity.train$activity,x.train)
-      
-
-
-####  create the unified dataset############
-
+###################################################
+###
+####  Create the Unified Dataset     ############
+###
+################################################
 
 #create the one dataset containing both test and training data
         all.data<-rbind(test.data, train.data)
+        all.data$rownum<-c(1:nrow(all.data))
 
 #write the tidy dataset with the combined tables.
         write.table(all.data, file = "./one_dataset.csv", col.names = TRUE, sep = ",", row.names = FALSE)
@@ -137,7 +132,6 @@
         rm(activity.labels)
         rm(subject.test)
         rm(subject.train)
-        rm(t1);rm(t2)
         rm(x.test); rm(y.test)
         rm(x.train); rm(y.train)
         
@@ -161,26 +155,49 @@
         names1<-names(all.data)
 
 ##  preserve the first 3 columns of information
-        first2.col<-subset(all.data, select = c(subject:activity))
+        keep3.col<-subset(all.data, select = c(rownum,Subject, Activity))
 
 ##  get the columns with the phrase "mean", then "std" in them
         all.mean<-subset(all.data, select = names1 %in% grep("mean", names1, value=TRUE))
+        all.mean$rownum<-c(1:nrow(all.mean))
+
         all.std<-subset(all.data, select = names1 %in% grep("std", names1, value=TRUE))
+        all.std$rownum<-c(1:nrow(all.std))
+
 
 ## merge the three datasets back into one with all the names and key fields
 ## and keep the two datasets for mean and standard deviation separated for 
 ## more simple processing
-        all.to.process <-cbind(first2.col, all.mean, all.std)
-        all.mean<-cbind(first2.col, all.mean)      
-        all.std<-cbind(first2.col, all.std) 
-
-##  clear memory
-        rm(first2.col)
+        to.process <-merge(all.mean, all.std, by="rownum", all.x = TRUE, all.y=TRUE)
+        to.process<-merge(keep3.col,to.process,by="rownum", all.x = TRUE, all.y=TRUE )
+        
 
 ######### Phase 3 ##########
 ##
 ##   Calculate the Averages for the combined datasets
 ##
 ##
+###  
+
+## create a unique identifier to simplify the calculation
+## of means across all columns
+        simple.id<-subset(to.process, select = c(rownum,Subject, Activity))
+        simple.id$SubjectActivity<-paste(simple.id$Subject,simple.id$Activity)
+
+###   get rid of the individual columns subject & activity
+## merge with simple id
+## get rid of row num
+##  colMeans the shit out of everything
+
+
+
+##  order the dataset by Subject and then Activity
+        sorted<-to.process[,order(Subject, Activity)]
+##  get rid of unique identifier row number
+        sorted<-subset(sorted, select = 2:82)
+##  create a clear identifier of the Subject and the Activity to be used for
+## creating the column means
+        
+
 
 
