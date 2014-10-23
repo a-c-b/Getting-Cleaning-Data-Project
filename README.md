@@ -1,11 +1,9 @@
-
-
 #Getting-Cleaning-Data-Project
-#=============================
+=============================
 
-##   This is the project for the coursera course Getting and Cleaning Data.
+##  This is the project for the coursera course Getting and Cleaning Data.
         
-#       Loaded into this Repo are the following documents and files:
+##  Loaded into this Repo are the following documents and files:
         
         1) run_analysis.R script, 
         2) a Read Me markdown document, 
@@ -13,8 +11,8 @@
         4) and upload the final tidy data text file of the summarized results
 
  
-#      Phase 1: 
-##     Load, clean, merge and name all the Test files first.
+##      Phase 1: 
+###     Load, clean, merge and name all the Test files first.
 
         The script run_analysis.R begins with deleting any previous data sets in
         your working directory which would be equal to what the unzipped directory
@@ -50,9 +48,9 @@
         All the temporary tables, except for the single combined table, are cleared
         from memory.
         
-# Phase 2
-##  Extracting only the measurements on the mean and standard deviation 
-##  for each measurement.
+## Phase 2
+###  Extracting only the measurements on the mean and standard deviation 
+###  for each measurement.
 
         
           This will create a second tidy dataset.  A subset of which will contain
@@ -80,8 +78,8 @@
      
      
      
-# Phase 3
-##  Calculate the Averages for the combined datasets
+## Phase 3
+###  Calculate the Averages for the combined datasets
 
         Create the dataset which stores the result of the mean value
         for all features which contained either the phrase "mean" or "std"

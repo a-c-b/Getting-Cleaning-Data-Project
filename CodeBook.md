@@ -25,13 +25,17 @@
         5.From the data set in step 4, creates a second, independent tidy data set with
                 the average of each variable for each activity and each subject.
         
-        A full description is available at the site where the data was obtained: 
+        A full description of the raw datasets is available at the site where the data was obtained: 
         
 http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones 
         
         Here is the data for the project: 
         
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
+
+        Attribution and information from their dataset is found at the bottom of this document.
+
+
 
 ##  Description of Work
 
@@ -106,52 +110,106 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
         all.data - is created by binding the rows from test.data and train.data 
 
 ##  Phase 2 ###
-simple.id - a table created from a subset of all.data for the columns rownum,Subject,
-                & Activity.  This is to be used to create a new sort order of the
-                final results by Subject and Activity for the selected columns of
-                information
-
-simple - table created from simple.id after a concatenation of Subject & Activity
-                is made.  This is tied to a unique rownum(ber) of the data.
-                
-all.mean - a table created from a subset of all.data for the columns with the phrase
-                "mean" in the Feature name.
-
-all.std - a table created from a subset of all.data for the columns with the phrase
-                "std" in the Feature name.    
-
-to.process - table created from merging the columns from all.mean and all.std by rownum
-                and then simple is added back in to return the subject, activity,
-                and the concatenated SubjectActivity
+        simple.id - a table created from a subset of all.data for the columns rownum,Subject,
+                        & Activity.  This is to be used to create a new sort order of the
+                        final results by Subject and Activity for the selected columns of
+                        information
+        
+        simple - table created from simple.id after a concatenation of Subject & Activity
+                        is made.  This is tied to a unique rownum(ber) of the data.
+                        
+        all.mean - a table created from a subset of all.data for the columns with the phrase
+                        "mean" in the Feature name.
+        
+        all.std - a table created from a subset of all.data for the columns with the phrase
+                        "std" in the Feature name.    
+        
+        to.process - table created from merging the columns from all.mean and all.std by rownum
+                        and then simple is added back in to return the subject, activity,
+                        and the concatenated SubjectActivity
                 
 ## Phase 3  ####
 
-SA - a list created from the distinct values of Subject + Activity.  This is to be
-                used for the aggregation function.
-
-result - table created from the aggregate function of the to.process table.  The
-                mean function is applied to all the columns grouped by the row grouping
-                of Subject + Activity.
-
-sorted - temporary table used to hold the sorted data of Subject then Activity
-                which is then used to create a sequence number.
-                
-finished.result - The aggregated table result is sorted for a numeric sort of
-                Subject number then Activity in alphabetical order.
-                
+        SA - a list created from the distinct values of Subject + Activity.  This is to be
+                        used for the aggregation function.
+        
+        result - table created from the aggregate function of the to.process table.  The
+                        mean function is applied to all the columns grouped by the row grouping
+                        of Subject + Activity.
+        
+        sorted - temporary table used to hold the sorted data of Subject then Activity
+                        which is then used to create a sequence number.
+                        
+        finished.result - The aggregated table result is sorted for a numeric sort of
+                        Subject number then Activity in alphabetical order.
+                        
  
 ##  Additional Vectors added
-$rownum - field added to the various datasets to keep the datasets aligned during
-        binding and merging process
-
-
-##Output Files
-one_dataset.csv - will be written to the working directory.  This contains 
-        10,299 observations 565 variables from the Test and Training datasets with
-        descriptive headers for the columns and rows identifying subject and Activity.
+        $rownum - field added to the various datasets to keep the datasets aligned                 
+                during binding and merging process
         
-finished_result.csv - will be written to the working directory.  This contains
-        180 observations of 80 variables which are the mean calculations for each of
-        the Features which had either the phrase "mean" or "std" in them.  The means
-        are calculated at each Activity level for each Subject.
+        $SubjectActivity - a field created from the concatenation of the Subject number
+                plus the Activity Label.  This is created so the summarization process
+                can be shorted from two iterations to a single one.
+                
+        
+##  Output Files
 
+        All output files will be written in .txt format with row.names = FALSE
+        
+        one_dataset.txt - will be written to the working directory.  This contains 
+                10,299 observations 565 variables from the Test and Training datasets with
+                descriptive headers for the columns and rows identifying subject and Activity.
+                
+        finished_result.txt - will be written to the working directory.  This contains
+                180 observations of 80 variables which are the mean calculations for each of
+                the Features which had either the phrase "mean" or "std" in them.  The means
+                are calculated at each Activity level for each Subject.
+
+
+##  Original documentation for the dataset and attribution
+
+        
+        Abstract: Human Activity Recognition database built from the recordings of 30 subjects performing activities of daily living (ADL) while carrying a waist-mounted smartphone with embedded inertial sensors.
+          
+        
+        Source:
+        
+        Jorge L. Reyes-Ortiz, Davide Anguita, Alessandro Ghio, Luca Oneto. 
+        Smartlab - Non Linear Complex Systems Laboratory 
+        DITEN - Universit√  degli Studi di Genova, Genoa I-16145, Italy. 
+        activityrecognition '@' smartlab.ws 
+        www.smartlab.ws 
+
+
+
+
+        Data Set Information:
+        
+        The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
+        
+        The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain. 
+        
+        Check the README.txt file for further details about this dataset. 
+
+
+        Attribute Information:
+        
+        For each record in the dataset it is provided: 
+        - Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration. 
+        - Triaxial Angular velocity from the gyroscope. 
+        - A 561-feature vector with time and frequency domain variables. 
+        - Its activity label. 
+        - An identifier of the subject who carried out the experiment. 
+        
+        
+        Relevant Papers:
+        
+        N/A
+        
+         
+        
+        Citation Request:
+        
+        [1] Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. Human Activity Recognition on Smartphones using a Multiclass Hardware-Friendly Support Vector Machine. International Workshop of Ambient Assisted Living (IWAAL 2012). Vitoria-Gasteiz, Spain. Dec 2012
+        
