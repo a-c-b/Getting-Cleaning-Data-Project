@@ -12,7 +12,7 @@
 ##################################################
 
 ## libraries to ensure are loaded
-        library(plyr)
+        ##library(plyr)
         library(dplyr)
 
 
@@ -120,7 +120,7 @@
         all.data$rownum<-c(1:nrow(all.data))
 
 #write the tidy dataset with the combined tables.
-        write.table(all.data, file = "./one_dataset.csv", col.names = TRUE, sep = ",", row.names = FALSE)
+        write.table(all.data, file = "./one_dataset.txt", col.names = TRUE, sep = ",", row.names = FALSE)
 
 ## clear memory for next phase of work 
         
@@ -155,7 +155,9 @@
         names1<-names(all.data)
 
 ##  preserve the first 3 columns of information
-        keep3.col<-subset(all.data, select = c(rownum,Subject, Activity))
+        simple.id<-subset(all.data, select = c(rownum,Subject, Activity))
+        simple.id$SubjectActivity<-paste(simple.id$Subject,simple.id$Activity)
+        simple<-subset(simple.id, select=c(rownum, SubjectActivity))
 
 ##  get the columns with the phrase "mean", then "std" in them
         all.mean<-subset(all.data, select = names1 %in% grep("mean", names1, value=TRUE))
@@ -169,7 +171,9 @@
 ## and keep the two datasets for mean and standard deviation separated for 
 ## more simple processing
         to.process <-merge(all.mean, all.std, by="rownum", all.x = TRUE, all.y=TRUE)
-        to.process<-merge(keep3.col,to.process,by="rownum", all.x = TRUE, all.y=TRUE )
+        to.process<-merge(simple,to.process,by="rownum", all.x = TRUE, all.y=TRUE )
+        to.process<-subset(to.process, select = -rownum)
+        names1<-names(to.process)
         
 
 ######### Phase 3 ##########
@@ -177,26 +181,45 @@
 ##   Calculate the Averages for the combined datasets
 ##
 ##
-###  
+#####################################
 
-## create a unique identifier to simplify the calculation
-## of means across all columns
-        simple.id<-subset(to.process, select = c(rownum,Subject, Activity))
-        simple.id$SubjectActivity<-paste(simple.id$Subject,simple.id$Activity)
-
-###   get rid of the individual columns subject & activity
-## merge with simple id
-## get rid of row num
-##  colMeans the shit out of everything
+##   create a list to use with the aggregate function
+        SA<-list(to.process$SubjectActivity)
+      
+##  create the dataset which stores the result of the mean value
+##  for all features which contained either the phrase "mean" or "std"
+##  for all the subjects in each of their activities
 
 
+        result<-aggregate(to.process, by = SA, FUN = mean, na.rm=TRUE)
 
-##  order the dataset by Subject and then Activity
-        sorted<-to.process[,order(Subject, Activity)]
-##  get rid of unique identifier row number
-        sorted<-subset(sorted, select = 2:82)
-##  create a clear identifier of the Subject and the Activity to be used for
-## creating the column means
+##  get rid of the column which could not be calculated
+        result<-subset(result, select = -SubjectActivity)
+        names(result)<-names1
+
+##  create a table to develop a sort order by reusing
+##  the Subject and Activity tables which were unique by row number
+
+       
+       # library(dplyr)
+        sorted<-distinct(subset(simple.id,select = c(Subject, Activity, SubjectActivity)))
+        attach(sorted)
+        sorted<-sorted[order(Subject,Activity),]
+        sorted$rownum<-c(1:nrow(sorted))
+        sorted<-subset(sorted, select=c(SubjectActivity, rownum))
+        
+ 
+# merge the sort order with the result table
+        finished.result<-merge(result,sorted,by="SubjectActivity", all.x = TRUE, all.y=TRUE )
+         attach(finished.result)
+        finished.result<-finished.result[order(rownum),]
+        finished.result<-subset(finished.result, select = -rownum)
+        write.table(finished.result, file = "./finished_result.txt", col.names = TRUE, sep = ",", row.names = FALSE)       
+                
+####  End ####
+
+
+        
         
 
 
