@@ -3,7 +3,7 @@
 #Getting-Cleaning-Data-Project
 #=============================
 
-##       This is the project for the coursera course Getting and Cleaning Data.
+##   This is the project for the coursera course Getting and Cleaning Data.
         
 #       Loaded into this Repo are the following documents and files:
         

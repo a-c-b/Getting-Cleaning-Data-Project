@@ -74,34 +74,36 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 
 ### Phase 1  ###
 
-dataset_url holds the URL of the data to be downloaded
-features.list - takes the data from the features.txt file.  These are the headers for
-                for the data itself.  
-activity.labels - takes the data from the activity_labels.txt file
-
-y.test - takes Activity Number  from the Test dataset
-x.test - takes the data set from the Test dataset
-subject.test - takes the subject number from the Test dataset
-
-y.train - takes Activity Number  from the train dataset
-x.train - takes the data set from the train dataset
-subject.train - takes the subject number from the train dataset
-
-names for train and test.data come from the features.list$V2    
-
-activity.test - is created from merging the Activity Number with the Activity Label
-                on the activity.num field
+        dataset_url holds the URL of the data to be downloaded
+        
+        features.list - takes the data from the features.txt file.  These are the
+                headers for the data itself.  
                 
-test.data - is created from merging activity and subject data with the test data on a
-                rownum field for the TEST dataset
-                
-activity.train - is created from merging the Activity Number with the Activity Label
-                on the activity.num field
-                
-train.data - is created from merging activity and subject data with the train data on a
-                rownum field for the train dataset
-                
-all.data - is created by binding the rows from test.data and train.data 
+        activity.labels - takes the data from the activity_labels.txt file
+        
+        y.test - takes Activity Number  from the Test dataset
+        x.test - takes the data set from the Test dataset
+        subject.test - takes the subject number from the Test dataset
+        
+        y.train - takes Activity Number  from the train dataset
+        x.train - takes the data set from the train dataset
+        subject.train - takes the subject number from the train dataset
+        
+        names for train and test.data come from the features.list$V2    
+        
+        activity.test - is created from merging the Activity Number with the Activity
+                Label on the activity.num field
+                        
+        test.data - is created from merging activity and subject data with the test data
+                on a rownum field for the TEST dataset
+                        
+        activity.train - is created from merging the Activity Number with the Activity
+                Label on the activity.num field
+                        
+        train.data - is created from merging activity and subject data with the train
+                data on a rownum field for the train dataset
+                        
+        all.data - is created by binding the rows from test.data and train.data 
 
 ##  Phase 2 ###
 simple.id - a table created from a subset of all.data for the columns rownum,Subject,
