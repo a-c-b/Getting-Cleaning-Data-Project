@@ -1,15 +1,14 @@
 # Code Book for Getting and Cleaning Data Project
 
+####        by andrea345
 
-### by andrea345
 
-
-## Purpose
+### Purpose
         The purpose of this codebook is to explain the sources and the subsequent
         transformations of the dataset(s) used in the project for the course "Getting
         and Cleaning Data."
 
-## Objectives
+### Objectives
         The objectives were the following:
         
         The creation of one R script called run_analysis.R which does the following:
@@ -37,11 +36,11 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 
 
 
-##  Description of Work
+###  Description of Work
 
         There are 3 phases to the code:
         
-### Phase 1 ###
+#### Phase 1 ###
           Set up libraries
           Set up temporary variables
           Delete possible old data.  Download data
@@ -50,7 +49,7 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
               can be combined to include descriptive activity names
               and descriptive feature names for the variable labels
 
-### Phase 2  ###
+#### Phase 2  ###
 
           Extracting only the measurements on the mean and standard deviation 
                 for each measurement.
@@ -61,7 +60,7 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
                   subjects at each of their Activities.
   
 
-###  Phase 3 ###
+####  Phase 3 ###
 
            Calculates the means for those features which had "mean" or "std"
                 in their descriptive name.
@@ -73,10 +72,9 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
            Creates the final output file
 
 
+###  Temporary tables
 
-##  Temporary tables
-
-### Phase 1  ###
+#### Phase 1  ###
 
         dataset_url holds the URL of the data to be downloaded
         
@@ -109,7 +107,7 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
                         
         all.data - is created by binding the rows from test.data and train.data 
 
-##  Phase 2 ###
+###  Phase 2 ###
         simple.id - a table created from a subset of all.data for the columns rownum,Subject,
                         & Activity.  This is to be used to create a new sort order of the
                         final results by Subject and Activity for the selected columns of
@@ -128,7 +126,7 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
                         and then simple is added back in to return the subject, activity,
                         and the concatenated SubjectActivity
                 
-## Phase 3  ####
+### Phase 3  ####
 
         SA - a list created from the distinct values of Subject + Activity.  This is to be
                         used for the aggregation function.
@@ -144,7 +142,8 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
                         Subject number then Activity in alphabetical order.
                         
  
-##  Additional Vectors added
+###  Additional Vectors added and assigned names created for the files.
+
         $rownum - field added to the various datasets to keep the datasets aligned                 
                 during binding and merging process
         
@@ -152,8 +151,22 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
                 plus the Activity Label.  This is created so the summarization process
                 can be shorted from two iterations to a single one.
                 
+        $ActivityNum - vector name assigned the first field of the activity_labels.csv
+                data.This is the numeric representation of the Activity which is the
+                dataset found in the y_test(or train).csv files.
+                
+        $Activity - is the vector name assigned to the 2nd field of the 
+                activity_labels.csv data.  This is the name of the Activity.
         
-##  Output Files
+        $Subject - is the vector name assigned the the vector of data in the
+                subject_test(or train).csv data.
+                
+        All the vector names for the Features datasets (X_test.txt or X_train.txt)
+                are found in the $V2 vector loaded from the features.txt file.
+                
+        
+        
+###  Output Files
 
         All output files will be written in .txt format with row.names = FALSE
         
@@ -167,10 +180,12 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
                 are calculated at each Activity level for each Subject.
 
 
-##  Original documentation for the dataset and attribution
+###  Original documentation for the dataset and attribution
 
         
-        Abstract: Human Activity Recognition database built from the recordings of 30 subjects performing activities of daily living (ADL) while carrying a waist-mounted smartphone with embedded inertial sensors.
+        Abstract: Human Activity Recognition database built from the recordings of 30
+        subjects performing activities of daily living (ADL) while carrying a waist
+        -mounted smartphone with embedded inertial sensors.
           
         
         Source:
@@ -180,8 +195,6 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
         DITEN - Universit√  degli Studi di Genova, Genoa I-16145, Italy. 
         activityrecognition '@' smartlab.ws 
         www.smartlab.ws 
-
-
 
 
         Data Set Information:
@@ -223,7 +236,6 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
         
         N/A
         
-         
         
         Citation Request:
         

@@ -3,13 +3,23 @@
 
 ###  This is the project for the coursera course Getting and Cleaning Data.
         
-###  Loaded into this Repo are the following documents and files:
+###  Uploaded for this project, or available, are the following documents and files:
+
+#### In this Repo
         
         1) run_analysis.R script, 
         2) a Read Me markdown document, 
-        3) a Code book markdown document, 
-        4) and upload the final tidy data text file of the summarized results
+        3) a Code book markdown document
+        
+#### On coursera
 
+        4) an upload the final tidy data text file of the summarized results
+
+#### On demand
+
+        5) a .txt file of all the Feature observations with all the data assigned
+                to each Subject for each Activity
+ 
  
 ###      Phase 1: 
 ####     Load, clean, merge and name all the Test files first.

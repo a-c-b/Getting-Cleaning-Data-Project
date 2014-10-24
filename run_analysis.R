@@ -12,10 +12,7 @@
 ##################################################
 
 ## libraries to ensure are loaded
-        ##library(plyr)
         library(dplyr)
-
-
 
 #start with a clean load of the data.  Delete old directories and files
         if(file.exists("./UCI HAR Dataset")){unlink("./UCI HAR Dataset", 
@@ -30,17 +27,21 @@
 ## the files are binary files so require the mode = 'wb' parameter 
 ## to successfully unzip
         if(!file.exists("Dataset.zip")){
-        download.file(dataset_url, destfile="Dataset.zip", mode = 'wb')}
+                download.file(dataset_url, destfile="Dataset.zip", mode = 'wb')
+                        }
 
 #unzip the dataset
         unzip("Dataset.zip", overwrite= TRUE)
 
 
 #List of all features
-        features.list<-read.csv("./UCI HAR Dataset/features.txt", sep=" ", header = FALSE)
+        features.list<-read.csv("./UCI HAR Dataset/features.txt", sep=" ", 
+                                        header = FALSE)
+
 # Links the numeric labels of the activity with their activity name
-        activity.labels<-read.csv("./UCI HAR Dataset/activity_labels.txt", sep=" ", header = FALSE)
-                names(activity.labels)<-c("ActivityNum","Activity")
+        activity.labels<-read.csv("./UCI HAR Dataset/activity_labels.txt", 
+                                        sep=" ", header = FALSE)
+        names(activity.labels)<-c("ActivityNum","Activity")
 
 # Load the files of Test labels, subjects, and data.  Name the columns.
         y.test<-read.csv("./UCI HAR Dataset/test/y_test.txt", sep="", header = FALSE)
@@ -71,7 +72,8 @@
 #  the subject information with the activity to the dataset
 
         test.data<-merge(activity.test, x.test, by = "rownum", all.x = TRUE, all.y=TRUE)
-        test.data<-merge(subject.test, test.data, by="rownum", all.x = TRUE, all.y = TRUE)
+        test.data<-merge(subject.test, test.data, by="rownum", all.x = TRUE, 
+                                all.y = TRUE)
 
 ##########  Training data
 ##
@@ -80,11 +82,14 @@
 ##########
 # Load the files of train labels, subjects, and data.  Name the columns.
         y.train<-read.csv("./UCI HAR Dataset/train/y_train.txt", sep="", header = FALSE)
-                names(y.train)<-"ActivityNum"
-        subject.train<-read.csv("./UCI HAR Dataset/train/subject_train.txt", sep="", header = FALSE)
-                names(subject.train)<-c("Subject")
+        names(y.train)<-"ActivityNum"
+        
+        subject.train<-read.csv("./UCI HAR Dataset/train/subject_train.txt", sep="", 
+                                        header = FALSE)
+        names(subject.train)<-c("Subject")
+        
         x.train<-read.csv("./UCI HAR Dataset/train/X_train.txt", sep="", header = FALSE)
-                names(x.train)<-features.list$V2
+        names(x.train)<-features.list$V2
 
 
 ####  Begin processing the files #############
@@ -106,8 +111,10 @@
 ##  create the cleaned train data set by combining
 #  the subject information with the activity to the dataset
 
-        train.data<-merge(activity.train, x.train, by = "rownum", all.x = TRUE, all.y=TRUE)
-        train.data<-merge(subject.train, train.data, by="rownum", all.x = TRUE, all.y = TRUE)
+        train.data<-merge(activity.train, x.train, by = "rownum", all.x = TRUE, 
+                                all.y=TRUE)
+        train.data<-merge(subject.train, train.data, by="rownum", all.x = TRUE, 
+                                all.y = TRUE)
 
 ###################################################
 ###
@@ -120,7 +127,8 @@
         all.data$rownum<-c(1:nrow(all.data))
 
 #write the tidy dataset with the combined tables.
-        write.table(all.data, file = "./one_dataset.txt", col.names = TRUE, sep = ",", row.names = FALSE)
+        write.table(all.data, file = "./one_dataset.txt", col.names = TRUE, 
+                    sep = ",", row.names = FALSE)
 
 ## clear memory for next phase of work 
         
@@ -200,9 +208,8 @@
 ##  create a table to develop a sort order by reusing
 ##  the Subject and Activity tables which were unique by row number
 
-       
-       # library(dplyr)
-        sorted<-distinct(subset(simple.id,select = c(Subject, Activity, SubjectActivity)))
+        sorted<-distinct(subset(simple.id,select = c(Subject, Activity, 
+                                                     SubjectActivity)))
         attach(sorted)
         sorted<-sorted[order(Subject,Activity),]
         sorted$rownum<-c(1:nrow(sorted))
@@ -210,11 +217,13 @@
         
  
 # merge the sort order with the result table
-        finished.result<-merge(result,sorted,by="SubjectActivity", all.x = TRUE, all.y=TRUE )
-         attach(finished.result)
+        finished.result<-merge(result,sorted,by="SubjectActivity", all.x = TRUE, 
+                               all.y=TRUE )
+        attach(finished.result)
         finished.result<-finished.result[order(rownum),]
         finished.result<-subset(finished.result, select = -rownum)
-        write.table(finished.result, file = "./finished_result.txt", col.names = TRUE, sep = ",", row.names = FALSE)       
+        write.table(finished.result, file = "./finished_result.txt", 
+                        col.names = TRUE, sep = ",", row.names = FALSE)       
                 
 ####  End ####
 
