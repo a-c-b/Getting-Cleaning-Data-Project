@@ -22,7 +22,7 @@
  
  
 ###      Phase 1: 
-####     Load, clean, merge and name all the Test files first.
+####     Load the files.   Clean, name and merge all the datasets.  
 
         The script run_analysis.R begins with deleting any previous data sets in
         your working directory which would be equal to what the unzipped directory
@@ -63,9 +63,9 @@
 ####  for each measurement.
 
         
-          This will create a second tidy dataset.  A subset of which will contain
-          only those variables out of the 564 variables in the all.data dataset
-          which have "mean" or "std" found in the header name.
+        This will create a second tidy dataset.  A subset of which will contain
+        only those variables out of the 564 variables in the all.data dataset
+        which have "mean" or "std" found in the header name.
 
 ####  Steps:
         
