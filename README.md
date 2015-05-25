@@ -7,8 +7,8 @@
 
 #### In this Repo
         
-        1) run_analysis.R script, 
-        2) a Read Me markdown document, 
+        1) [run_analysis.R script](https://github.com/andrea345/Getting-Cleaning-Data-Project/blob/master/run_analysis.R) 
+        2) a Read Me markdown document
         3) a Code book markdown document
         
 #### On coursera
